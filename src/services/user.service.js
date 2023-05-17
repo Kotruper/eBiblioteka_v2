@@ -12,6 +12,10 @@ const getBooks = () => {
   return axios.get(API_URL + "/Book");
 };
 
+const getBookbyId = (id) => {
+  return axios.get(API_URL + "/Book/"+id);
+};
+
 const getCategories = () => {
   return axios.get(API_URL + "/Category");
 };
@@ -44,6 +48,7 @@ const getAdminBoard = () => {
 const UserService = {
   getPublicContent,
   getBooks,
+  getBookbyId,
   getCategories,
   getTags,
   getAuthors,
