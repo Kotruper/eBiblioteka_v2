@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, Outlet, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import bgImage from './bg.jpg';
@@ -21,10 +21,20 @@ import Categories from "./pages/Categories";
 import BookPage from "./pages/BookPage";
 import Navbar from "./components/Navbar";
 
+const ProtectedRoute = ({
+  isAllowed,
+  redirectPath = '/home',
+  children,
+}) => {
+  if (!isAllowed) {
+    return <Navigate to={redirectPath} replace />;
+  }
+
+  return children ? children : <Outlet />;
+};
+
 
 const App = () => {
-  const [showModeratorBoard, setShowModeratorBoard] = useState();
-  const [showAdminBoard, setShowAdminBoard] = useState();
   const [currentUser, setCurrentUser] = useState(undefined);
 
   useEffect(() => {
@@ -32,18 +42,12 @@ const App = () => {
 
     if (user) {
       setCurrentUser(user);
-      setShowModeratorBoard(user?.role == "employee");
-      setShowAdminBoard(user?.role == "admin");
     }
   }, []);
 
-  const logOut = () => {
-    AuthService.logout();
-  };
-
   return (
     <div style={{backgroundImage: "url("+bgImage+")", height: "100vh"}} >
-      
+
       <Navbar user={currentUser}/>
 
       <div className="container mt-3" >
@@ -57,10 +61,17 @@ const App = () => {
           <Route path="/category" element={<Categories/>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
-          <Route path="/profile" element={<Profile/>} />
-          <Route path="/user" element={<BoardUser/>} />
-          <Route path="/mod" element={<BoardModerator/>} />
-          <Route path="/admin" element={<BoardAdmin/>} />
+          <Route element={<ProtectedRoute isAllowed={!!currentUser}/>}>
+            <Route path="/profile" element={<Profile/>} />
+            <Route path="/user" element={<BoardUser/>} />
+          </Route>
+          <Route element={<ProtectedRoute isAllowed={currentUser && currentUser.role == "employee"}/>}>
+            <Route path="/mod" element={<BoardModerator/>} />
+          </Route>
+          <Route element={<ProtectedRoute isAllowed={currentUser && currentUser.role == "admin"}/>}>
+            <Route path="/admin" element={<BoardAdmin/>} />
+          </Route>
+          
         </Routes>
       </div>
     </div>

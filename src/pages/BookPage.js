@@ -25,11 +25,11 @@ const BookPage = () => {
   }, [id]);
 
   return (
-    <div className="container bg-light">
+    <div className="container bg-light shadow-lg">
         <h3>Book page</h3>
-        {content && 
-        <div className="border p-3 shadow h-100">
-            <Image src={content.imageUrl} thumbnail fluid className="h-25 float-left mx-2"/>
+        {content ?  
+        <div className="border p-3">
+            <Image src={content.imageUrl} thumbnail className="w-25 float-left mx-2 "/> {/*czemu*/}
             <h1 className="mx-2">{content.title}</h1>
             <Button {...(content.bookAmount < 1) ? "disabled" : ""} className="float-right mx-1">Wypożycz</Button>
             {console.log(content)}
@@ -38,13 +38,15 @@ const BookPage = () => {
                 <span className="ml-1 p-1 border rounded" key={author.id}>{author.firstname + " " +author.lastname}</span>
             )}</p>
             <p>Kategorie: {content.categories.map((category) => 
-                <Badge bg="primary" className="ml-1" key={category.id}>{category.name}</Badge>
+                <Badge bg="primary" className="ml-1 text-white" key={category.id}>{category.name}</Badge>
             )}</p>
             <p>Tagi: {content.tags.map((tag) => 
-                <Badge bg="primary" className="ml-1" key={tag.id}>{tag.name}</Badge>
+                <Badge bg="primary" className="ml-1 text-white" key={tag.id}>{tag.name}</Badge>
             )}</p>
             <p className="m-3">Opis: {content.description}</p>
-        </div>}
+        </div>
+        :
+        <div>loading</div>}
     </div>
   );
 };

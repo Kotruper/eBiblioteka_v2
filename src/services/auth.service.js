@@ -26,7 +26,7 @@ const login = (username, password) => {
         const longassString1 = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/"
         const longassString2 = "http://schemas.microsoft.com/ws/2008/06/identity/claims/"
         const decoded = jwtDecode(response.data);
-        console.log(decoded);
+        //console.log(decoded);
         const user = {
             "email" : decoded[longassString1 + "name"],
             "id" : decoded[longassString1 + "nameidentifier"],

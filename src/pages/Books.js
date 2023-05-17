@@ -37,10 +37,10 @@ const Books = () => {
                 <span className="ml-1 p-1 border rounded" key={author.id}>{author.firstname + " " +author.lastname}</span>
             )}</span>
             <span className="ml-2">Kategorie: {bookData.categories.map((category) => 
-                <Badge bg="primary" className="ml-1" key={category.id}>{category.name}</Badge>
+                <Badge bg="primary" className="ml-1 text-white" key={category.id}>{category.name}</Badge>
             )}</span>
             <span className="ml-2">Tagi: {bookData.tags.map((tag) => 
-                <Badge bg="primary" className="ml-1" key={tag.id}>{tag.name}</Badge>
+                <Badge bg="primary" className="ml-1 text-white" key={tag.id}>{tag.name}</Badge>
             )}</span>
             <p className="m-3">Opis: {bookData.description}</p>
         </div>
