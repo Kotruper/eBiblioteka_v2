@@ -1,6 +1,5 @@
 import axios from "axios";
 import authHeader from "./auth-header";
-import jwtDecode from "jwt-decode";
 
 const API_URL = "https://bookserviceforelib.azurewebsites.net/api";
 

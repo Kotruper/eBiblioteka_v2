@@ -22,7 +22,7 @@ const BookPage = () => {
         setContent(_content);
       }
     );
-  }, []);
+  }, [id]);
 
   return (
     <div className="container bg-light">
@@ -35,13 +35,13 @@ const BookPage = () => {
             {console.log(content)}
            
             <p>Autorzy: {content.authors.map((author) => 
-                <span className="me-1 p-1 border rounded" key={author.id}>{author.firstname + " " +author.lastname}</span>
+                <span className="ml-1 p-1 border rounded" key={author.id}>{author.firstname + " " +author.lastname}</span>
             )}</p>
             <p>Kategorie: {content.categories.map((category) => 
-                <Badge bg="primary" className="me-1" key={category.id}>{category.name}</Badge>
+                <Badge bg="primary" className="ml-1" key={category.id}>{category.name}</Badge>
             )}</p>
             <p>Tagi: {content.tags.map((tag) => 
-                <Badge bg="primary" className="me-1" key={tag.id}>{tag.name}</Badge>
+                <Badge bg="primary" className="ml-1" key={tag.id}>{tag.name}</Badge>
             )}</p>
             <p className="m-3">Opis: {content.description}</p>
         </div>}

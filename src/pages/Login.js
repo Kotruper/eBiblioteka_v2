@@ -1,71 +1,59 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
-
 import AuthService from "../services/auth.service";
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 
-const required = (value) => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
-};
+const validationSchema = Yup.object().shape({
+  username: Yup.string()
+    .required('Username is required')
+    .email('Username is not a valid email')
+    .min(6, 'Username must be at least 6 characters')
+    .max(40, 'Username must not exceed 40 characters'),
+  password: Yup.string()
+    .required('Password is required')
+    .min(6, 'Password must be at least 6 characters')
+    .max(40, 'Password must not exceed 40 characters'),
+});
 
 const Login = () => {
   let navigate = useNavigate();
 
-  const form = useRef();
-  const checkBtn = useRef();
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const onChangeUsername = (e) => {
-    const username = e.target.value;
-    setUsername(username);
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    resolver: yupResolver(validationSchema)
+  });
 
-  const onChangePassword = (e) => {
-    const password = e.target.value;
-    setPassword(password);
-  };
-
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const onSubmit = data => {
+    //console.log(JSON.stringify(data, null, 2));
 
     setMessage("");
     setLoading(true);
 
-    form.current.validateAll();
+    AuthService.login(data.username, data.password).then(
+      () => {
+        navigate("/profile");
+        window.location.reload();
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
 
-    if (checkBtn.current.context._errors.length === 0) {
-      AuthService.login(username, password).then(
-        () => {
-          navigate("/profile");
-          window.location.reload();
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-
-          setLoading(false);
-          setMessage(resMessage);
-        }
-      );
-    } else {
-      setLoading(false);
-    }
+        setLoading(false);
+        setMessage(resMessage);
+      }
+    );
   };
 
   return (
@@ -77,33 +65,31 @@ const Login = () => {
           className="profile-img-card"
         />
 
-        <Form onSubmit={handleLogin} ref={form}>
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
-            <Input
-              type="text"
-              className="form-control"
-              name="username"
-              value={username}
-              onChange={onChangeUsername}
-              validations={[required]}
-            />
-          </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="form-group">
+          <label>Email</label>
+          <input
+            name="username" //sent to api 
+            type="email"
+            {...register('username')}
+            className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+          />
+          <div className="invalid-feedback">{errors.username?.message}</div>
+        </div>
+
+        <div className="form-group">
+          <label>Password</label>
+          <input
+            name="password"
+            type="password"
+            {...register('password')}
+            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+          />
+          <div className="invalid-feedback">{errors.password?.message}</div>
+        </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <Input
-              type="password"
-              className="form-control"
-              name="password"
-              value={password}
-              onChange={onChangePassword}
-              validations={[required]}
-            />
-          </div>
-
-          <div className="form-group">
-            <button className="btn btn-primary btn-block" disabled={loading}>
+            <button className="btn btn-primary btn-block" type="submit" disabled={loading}>
               {loading && (
                 <span className="spinner-border spinner-border-sm"></span>
               )}
@@ -118,8 +104,7 @@ const Login = () => {
               </div>
             </div>
           )}
-          <CheckButton style={{ display: "none" }} ref={checkBtn} />
-        </Form>
+        </form>
       </div>
     </div>
   );

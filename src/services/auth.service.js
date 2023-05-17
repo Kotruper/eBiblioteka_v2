@@ -23,12 +23,14 @@ const login = (username, password) => {
     })
     .then((response) => {
       if (response.data) {
-        const longassString = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/"
+        const longassString1 = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/"
+        const longassString2 = "http://schemas.microsoft.com/ws/2008/06/identity/claims/"
         const decoded = jwtDecode(response.data);
+        console.log(decoded);
         const user = {
-            "email" : decoded[longassString + "name"],
-            "id" : decoded[longassString + "nameidentifier"],
-            "role" : decoded[longassString + "role"],
+            "email" : decoded[longassString1 + "name"],
+            "id" : decoded[longassString1 + "nameidentifier"],
+            "role" : decoded[longassString2 + "role"],
             "accessToken" : response.data
         }
         localStorage.setItem("user", JSON.stringify(user));
