@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import bgImage from './bg.jpg';
 
 import AuthService from "./services/auth.service";
 
@@ -17,6 +18,7 @@ import Books from "./components/Books";
 import Authors from "./components/Authors";
 import Tags from "./components/Tags";
 import Categories from "./components/Categories";
+import BookPage from "./components/BookPage";
 
 
 const App = () => {
@@ -39,7 +41,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div style={{backgroundImage: "url("+bgImage+")", height: "100vh"}} >
       <nav className="navbar navbar-expand navbar-dark bg-dark">
         <Link to={"/"} className="navbar-brand">
           E-Biblioteka v2
@@ -52,7 +54,7 @@ const App = () => {
           </li>
 
           <li className="nav-item">
-            <Link to={"/book"} className="nav-link">
+            <Link to={"/books"} className="nav-link">
               Books
             </Link>
           </li>
@@ -130,11 +132,12 @@ const App = () => {
         )}
       </nav>
 
-      <div className="container mt-3">
+      <div className="container mt-3" >
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/home" element={<Home/>} />
-          <Route path="/book" element={<Books/>} />
+          <Route path="/books" element={<Books/>} />
+          <Route path="/book/:id" element={<BookPage/>} />
           <Route path="/author" element={<Authors/>} />
           <Route path="/tag" element={<Tags/>} />
           <Route path="/category" element={<Categories/>} />
