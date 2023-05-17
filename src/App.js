@@ -6,24 +6,24 @@ import bgImage from './bg.jpg';
 
 import AuthService from "./services/auth.service";
 
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Home from "./components/Home";
-import Profile from "./components/Profile";
-import BoardUser from "./components/BoardUser";
-import BoardModerator from "./components/BoardModerator";
-import BoardAdmin from "./components/BoardAdmin";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
+import BoardUser from "./pages/BoardUser";
+import BoardModerator from "./pages/BoardModerator";
+import BoardAdmin from "./pages/BoardAdmin";
 
-import Books from "./components/Books";
-import Authors from "./components/Authors";
-import Tags from "./components/Tags";
-import Categories from "./components/Categories";
-import BookPage from "./components/BookPage";
+import Books from "./pages/Books";
+import Authors from "./pages/Authors";
+import Tags from "./pages/Tags";
+import Categories from "./pages/Categories";
+import BookPage from "./pages/BookPage";
 
 
 const App = () => {
-  const [showModeratorBoard, setShowModeratorBoard] = useState(false);
-  const [showAdminBoard, setShowAdminBoard] = useState(false);
+  const [showModeratorBoard, setShowModeratorBoard] = useState();
+  const [showAdminBoard, setShowAdminBoard] = useState();
   const [currentUser, setCurrentUser] = useState(undefined);
 
   useEffect(() => {

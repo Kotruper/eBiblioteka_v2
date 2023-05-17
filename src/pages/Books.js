@@ -48,7 +48,7 @@ const Books = () => {
   return (
     <div className="container bg-light">
         <h3>Books page</h3>
-        {content?.map((book) =>
+        {content && content.map((book) =>
             <BookEntry bookData={book} key={book.id}/>
         )}
     </div>
