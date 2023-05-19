@@ -20,6 +20,8 @@ import Authors from "./pages/Authors";
 import Tags from "./pages/Tags";
 import Categories from "./pages/Categories";
 import BookPage from "./pages/BookPage";
+import UserService from "./services/user.service";
+import ErrorPage from "./pages/ErrorPage";
 
 const ProtectedRoute = ({
   isAllowed,
@@ -39,10 +41,10 @@ const root = createRoot(document.getElementById("root"));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-      <Route element={<App/>} >
+      <Route element={<App/>} errorElement={<ErrorPage/>}>
         <Route path="/" element={<Home/>} />
         <Route path="/books" element={<Books/>} />
-        <Route path="/books/:id" element={<BookPage/>} />
+        <Route path="/books/:id" element={<BookPage/>} loader={async ({params}) => ((await UserService.getBookbyId(params.id)).data)}/>
         <Route path="/author" element={<Authors/>} />
         <Route path="/tag" element={<Tags/>} />
         <Route path="/category" element={<Categories/>} />
