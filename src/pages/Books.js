@@ -26,7 +26,7 @@ const Books = () => {
   function BookEntry({bookData}){
     return(
         <div className="border p-3 shadow m-2 overflow-hidden" style={{height:"20vh"}}>
-          <Link to={`/book/${bookData.id}`} className="text-decoration-none">
+          <Link to={`/books/${bookData.id}`} className="text-decoration-none">
               <Image src={bookData.imageUrl} thumbnail fluid className="img-thumbnail float-left mx-2 img-fluid p-1 h-100"/>
 
               <h5 className="mx-2">{bookData.title}</h5>

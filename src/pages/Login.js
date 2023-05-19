@@ -4,6 +4,7 @@ import AuthService from "../services/auth.service";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import { FloatingLabel, Form } from "react-bootstrap";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
@@ -68,12 +69,13 @@ const Login = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label>Email</label>
-          <input
-            name="username" //sent to api 
-            type="email"
-            {...register('username')}
-            className={`form-control ${errors.username ? 'is-invalid' : ''}`}
-          />
+            <input
+              name="username" //sent to api 
+              type="email"
+              {...register('username')}
+              className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+            />
+          
           <div className="invalid-feedback">{errors.username?.message}</div>
         </div>
 

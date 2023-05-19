@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import AuthService from "../services/auth.service"
 
 export default function Navbar({user}){
@@ -8,57 +8,52 @@ export default function Navbar({user}){
           E-Biblioteka v2
         </Link>
         <div className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <Link to={"/home"} className="nav-link">
-              Home
-            </Link>
-          </li>
 
           <li className="nav-item">
-            <Link to={"/books"} className="nav-link">
+            <NavLink to={"/books"} className="nav-link">
               Books
-            </Link>
+            </NavLink>
           </li>
 
           <li className="nav-item">
-            <Link to={"/author"} className="nav-link">
+            <NavLink to={"/author"} className="nav-link">
               Authors
-            </Link>
+            </NavLink>
           </li>
 
           <li className="nav-item">
-            <Link to={"/tag"} className="nav-link">
+            <NavLink to={"/tag"} className="nav-link">
               Tags
-            </Link>
+            </NavLink>
           </li>
 
           <li className="nav-item">
-            <Link to={"/category"} className="nav-link">
+            <NavLink to={"/category"} className="nav-link">
               Categories
-            </Link>
+            </NavLink>
           </li>
 
           {(user?.role == "employee") && ( //Przykładowo
             <li className="nav-item">
-              <Link to={"/mod"} className="nav-link">
+              <NavLink to={"/mod"} className="nav-link">
                 Moderator Board
-              </Link>
+              </NavLink>
             </li>
           )}
 
           {(user?.role == "admin") && ( //Przykładowo
             <li className="nav-item">
-              <Link to={"/admin"} className="nav-link">
+              <NavLink to={"/admin"} className="nav-link">
                 Admin Board
-              </Link>
+              </NavLink>
             </li>
           )}
 
           {user?.role && (
             <li className="nav-item">
-              <Link to={"/user"} className="nav-link">
+              <NavLink to={"/user"} className="nav-link">
                 User
-              </Link>
+              </NavLink>
             </li>
           )}
         </div>
@@ -66,9 +61,9 @@ export default function Navbar({user}){
         {user ? (
           <div className="navbar-nav ml-auto">
             <li className="nav-item">
-              <Link to={"/profile"} className="nav-link">
+              <NavLink to={"/profile"} className="nav-link">
                 {user.email}
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-item">
               <a href="/login" className="nav-link" onClick={AuthService.logout}>
@@ -79,15 +74,15 @@ export default function Navbar({user}){
         ) : (
           <div className="navbar-nav ml-auto">
             <li className="nav-item">
-              <Link to={"/login"} className="nav-link">
+              <NavLink to={"/login"} className="nav-link">
                 Login
-              </Link>
+              </NavLink>
             </li>
 
             <li className="nav-item">
-              <Link to={"/register"} className="nav-link">
+              <NavLink to={"/register"} className="nav-link">
                 Sign Up
-              </Link>
+              </NavLink>
             </li>
           </div>
         )}
