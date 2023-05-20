@@ -3,7 +3,7 @@ import { Image, Badge, Button, Container, Row, Col, Stack } from "react-bootstra
 
 import UserService from "../services/user.service";
 import useUser from "../services/useUser";
-import { Link, useLoaderData, useParams } from "react-router-dom";
+import { Link, redirect, useLoaderData, useParams } from "react-router-dom";
 
 const BookPage = () => {
   const content = useLoaderData();
@@ -29,17 +29,16 @@ const BookPage = () => {
 */
   return (
     <div className="container bg-light shadow-lg">
-      <Link to={".."} relative="path">{"<< Powrót"}</Link>
+      <Link to={"./.."}>{"<< Powrót"}</Link>
         {content ?  
         <Container className="border p-3" fluid>
           <Row md={3}>
             <Col md={3} className="text-center">
-              <Image src={content.imageUrl} thumbnail className="mx-2"/> {/*czemu*/}
+              <Image src={content.imageUrl} thumbnail className="mx-2"/>
             </Col>
             <Col fluid={"true"} md={9}>
               <Stack className="float-right">
-                
-                <Button>Edit</Button>
+                {(currentUser?.role == "admin") && <Link to={"./edit"}><Button>Edit</Button></Link>}
                 <Button {...(content.bookAmount < 1) ? "disabled" : ""} className="mx-1">Wypożycz</Button>
               </Stack>
               <h1 className="mx-2">{content.title}</h1>
@@ -60,7 +59,7 @@ const BookPage = () => {
           </Row>
         </Container>
         :
-        <div>loading</div>}
+        <div>loading</div>} 
     </div>
   );
 };

@@ -20,6 +20,7 @@ import Authors from "./pages/Authors";
 import Tags from "./pages/Tags";
 import Categories from "./pages/Categories";
 import BookPage from "./pages/BookPage";
+import BookEdit from "./pages/BookEdit";
 import UserService from "./services/user.service";
 import ErrorPage from "./pages/ErrorPage";
 
@@ -43,10 +44,23 @@ const router = createBrowserRouter(
   createRoutesFromElements(
       <Route element={<App/>} errorElement={<ErrorPage/>}>
         <Route path="/" element={<Home/>} />
-        <Route path="/books" element={<Books/>} />
-        <Route path="/books/:id" element={<BookPage/>} loader={async ({params}) => ((await UserService.getBookbyId(params.id)).data)}/>
+        <Route path="/books" 
+          element={<Books/>} 
+          loader={async () => (await UserService.getBooks()).data}
+        />
+        <Route path="/books/:id" 
+          element={<BookPage/>} 
+          loader={async ({params}) => ((await UserService.getBookbyId(params.id)).data)}
+        />
+        <Route element={<ProtectedRoute isAllowed={currentUser && currentUser.role == "admin"}/>}>
+          <Route path="/books/:id/edit" 
+            element={<BookEdit/>} 
+            loader={async ({params}) => ((await UserService.getBookbyId(params.id)).data)}
+            action={async ({params}) => ((await UserService.editBookbyId(params.id)).data)}
+          />
+        </Route>
         <Route path="/author" element={<Authors/>} />
-        <Route path="/tag" element={<Tags/>} />
+        <Route path="/tag" element={<Tags/>} action={async (data) => console.log(data)}/>
         <Route path="/category" element={<Categories/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/register" element={<Register/>} />

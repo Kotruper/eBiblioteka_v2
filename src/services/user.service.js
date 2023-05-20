@@ -15,6 +15,10 @@ const getBookbyId = (id) => {
   return axios.get(API_URL + "/Book/"+id);
 };
 
+const editBookbyId = (id) => {
+  return axios.patch(API_URL + "/Book/"+id, { headers: authHeader() })
+}
+
 const getCategories = () => {
   return axios.get(API_URL + "/Category");
 };
@@ -48,6 +52,7 @@ const UserService = {
   getPublicContent,
   getBooks,
   getBookbyId,
+  editBookbyId,
   getCategories,
   getTags,
   getAuthors,

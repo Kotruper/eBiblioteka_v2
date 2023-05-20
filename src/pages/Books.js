@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Image, Badge } from "react-bootstrap";
 
 import UserService from "../services/user.service";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 
 const Books = () => {
-  const [content, setContent] = useState();
-
+  const content = useLoaderData();
+/*
   useEffect(() => {
     UserService.getBooks().then(
       (response) => {
@@ -22,7 +22,7 @@ const Books = () => {
       }
     );
   }, []);
-
+*/
   function BookEntry({bookData}){
     return(
         <div className="border p-3 shadow m-2 overflow-hidden" style={{height:"20vh"}}>
