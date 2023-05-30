@@ -1,4 +1,8 @@
 import { Link, NavLink } from "react-router-dom"
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import NavBar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import AuthService from "../services/auth.service"
 
 export default function Navbar({user}){
@@ -41,11 +45,20 @@ export default function Navbar({user}){
             </li>
           )}
 
-          {(user?.role == "admin") && ( //Przykładowo
+          {(user?.role == "admin") && ( 
             <li className="nav-item">
-              <NavLink to={"/admin"} className="nav-link">
-                Admin Board
-              </NavLink>
+              <NavDropdown title="Admin" >
+              <NavDropdown.Item>
+                <NavLink style={{ textDecoration: 'none' }} to={"/admin"}>
+                  Admin Board
+                </NavLink>
+              </NavDropdown.Item>
+              <NavDropdown.Item>
+                <NavLink style={{ textDecoration: 'none' }} to={"/users"}>
+                  Users list
+                </NavLink>
+              </NavDropdown.Item>
+            </NavDropdown>
             </li>
           )}
 

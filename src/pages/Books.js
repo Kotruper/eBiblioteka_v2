@@ -1,36 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Image, Badge } from "react-bootstrap";
+import { Image, Badge, Row, Col } from "react-bootstrap";
 
-import UserService from "../services/user.service";
+import BookService from "../services/book.service";
 import { Link, useLoaderData } from "react-router-dom";
 
 const Books = () => {
   const content = useLoaderData();
-/*
-  useEffect(() => {
-    UserService.getBooks().then(
-      (response) => {
-        setContent(response.data);
-      },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
 
-        setContent(_content);
-      }
-    );
-  }, []);
-*/
   function BookEntry({bookData}){
     return(
-        <div className="border p-3 shadow m-2 overflow-hidden" style={{height:"20vh"}}>
-          <Link to={`/books/${bookData.id}`} className="text-decoration-none">
-              <Image src={bookData.imageUrl} thumbnail fluid className="img-thumbnail float-left mx-2 img-fluid p-1 h-100"/>
-
-              <h5 className="mx-2">{bookData.title}</h5>
+        <Row className="border p-3 shadow m-2" style={{/*height:"20vh"*/}}>
+           <Col className="" xs={3}>
+            <Link to={`/books/${bookData.id}`} className="text-decoration-none">
+              <Image src={bookData.imageUrl} thumbnail fluid className="mx-2 p-1"/>
             </Link>
+          </Col>
+          <Col xs={9}>
+            <h5 className="mx-2">{bookData.title}</h5>
             {/*<Button {...(bookData.bookAmount < 1) ? "disabled" : ""} className="float-end mx-1">Zobacz</Button>*/}
         
             <span className="ml-2">Autorzy: {bookData.authors.map((author) => 
@@ -43,7 +29,10 @@ const Books = () => {
                 <Badge bg="primary" className="ml-1 text-white" key={tag.id}>{tag.name}</Badge>
             )}</span>
             <p className="m-3">Opis: {bookData.description}</p>
-        </div>
+          </Col>
+            
+            
+        </Row>
     )
 }
 

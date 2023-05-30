@@ -19,7 +19,7 @@ const App = () => {
   }, []);
 
   return (
-    <div style={{backgroundImage: "url("+bgImage+")", height: "100vh"}} >
+    <div style={{backgroundImage: "url("+bgImage+")", minHeight: "100vh", backgroundRepeat: "repeat"}} >
 
       <Navbar user={currentUser}/>
 

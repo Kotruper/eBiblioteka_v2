@@ -6,6 +6,8 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 import AuthService from "./services/auth.service";
+import BookService from "./services/book.service";
+import UserService from "./services/user.service";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -21,12 +23,13 @@ import Tags from "./pages/Tags";
 import Categories from "./pages/Categories";
 import BookPage from "./pages/BookPage";
 import BookEdit from "./pages/BookEdit";
-import UserService from "./services/user.service";
 import ErrorPage from "./pages/ErrorPage";
+
+import Users from "./pages/Users/Users";
 
 const ProtectedRoute = ({
   isAllowed,
-  redirectPath = '/home',
+  redirectPath = '/',
   children,
 }) => {
   if (!isAllowed) {
@@ -46,29 +49,46 @@ const router = createBrowserRouter(
         <Route path="/" element={<Home/>} />
         <Route path="/books" 
           element={<Books/>} 
-          loader={async () => (await UserService.getBooks()).data}
+          loader={async () => (await BookService.getBooks()).data}
         />
         <Route path="/books/:id" 
           element={<BookPage/>} 
-          loader={async ({params}) => ((await UserService.getBookbyId(params.id)).data)}
+          loader={async ({params}) => ((await BookService.getBookbyId(params.id)).data)}
         />
         <Route element={<ProtectedRoute isAllowed={currentUser && currentUser.role == "admin"}/>}>
           <Route path="/books/:id/edit" 
             element={<BookEdit/>} 
-            loader={async ({params}) => ((await UserService.getBookbyId(params.id)).data)}
-            action={async ({params}) => ((await UserService.editBookbyId(params.id)).data)}
+            loader={async ({params}) => ((await BookService.getBookbyId(params.id)).data)}
+            action={async ({params}) => ((await BookService.editBookbyId(params.id)).data)}
           />
         </Route>
         <Route path="/author" element={<Authors/>} />
-        <Route path="/tag" element={<Tags/>} action={async (data) => console.log(data)}/>
+        <Route path="/tag" element={<Tags/>}
+          loader={async () => (await BookService.tags.getTags()).data}
+          action={async (data) => console.log(data)}
+        />
+        <Route element={<ProtectedRoute isAllowed={currentUser && currentUser.role == "admin"}/>}>
+          <Route path="/tag/edit" element={<Tags edit={true}/>}
+            loader={async () => (await BookService.tags.getTags()).data}
+            action={async ({params, request}) => {
+              let formData = await request.formData();
+              return await BookService.tags.postTag(formData.get("tagName"))}}
+          />
+          <Route path="/tag/delete/:id"
+            action={async (data) => console.log(data)}
+          />
+        </Route>
         <Route path="/category" element={<Categories/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/register" element={<Register/>} />
         <Route element={<ProtectedRoute isAllowed={!!currentUser}/>}>
           <Route path="/profile" element={<Profile/>} />
           <Route path="/user" element={<BoardUser/>} />
+          <Route path="/users" 
+            element={<Users/>} 
+            loader={async () => ((await UserService.getUsersList()).data)}/>
         </Route>
-        <Route element={<ProtectedRoute isAllowed={currentUser && currentUser.role == "employee"}/>}>
+        <Route element={<ProtectedRoute isAllowed={currentUser  && (currentUser.role == "employee" || currentUser.role == "admin")}/>}>
           <Route path="/mod" element={<BoardModerator/>} />
         </Route>
         <Route element={<ProtectedRoute isAllowed={currentUser && currentUser.role == "admin"}/>}>

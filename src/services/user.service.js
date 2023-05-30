@@ -1,46 +1,10 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 
-const API_URL = "https://bookserviceforelib.azurewebsites.net/api";
+const API_URL_USER = "https://userserviceforelib.azurewebsites.net/api/";
 
-const getPublicContent = () => {
-  return axios.get(API_URL + "/Author");
-};
-
-const getBooks = () => {
-  return axios.get(API_URL + "/Book");
-};
-
-const getBookbyId = (id) => {
-  return axios.get(API_URL + "/Book/"+id);
-};
-
-const editBookbyId = (id) => {
-  return axios.patch(API_URL + "/Book/"+id, { headers: authHeader() })
-}
-
-const getCategories = () => {
-  return axios.get(API_URL + "/Category");
-};
-
-const getTags = () => {
-  return axios.get(API_URL + "/Tag");
-};
-
-const getAuthors = () => {
-  return axios.get(API_URL + "/Author");
-};
-
-const getUserBoard = () => {
-  return axios.get(API_URL + "user", { headers: authHeader() });
-};
-
-const getModeratorBoard = () => {
-  return axios.get(API_URL + "mod", { headers: authHeader() });
-};
-
-const getAdminBoard = () => {
-  return axios.get(API_URL + "admin", { headers: authHeader() });
+const getUsersList = () => {
+  return axios.get(API_URL_USER + "User", { headers: authHeader() });
 };
 
 /*const saveUser = (token) =>{
@@ -49,16 +13,7 @@ const getAdminBoard = () => {
 }*/
 
 const UserService = {
-  getPublicContent,
-  getBooks,
-  getBookbyId,
-  editBookbyId,
-  getCategories,
-  getTags,
-  getAuthors,
-  getUserBoard,
-  getModeratorBoard,
-  getAdminBoard,
+  getUsersList,
 };
 
 export default UserService;

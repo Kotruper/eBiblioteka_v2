@@ -1,32 +1,68 @@
 import React, { useState, useEffect } from "react";
+import { useLoaderData } from "react-router-dom";
+import useUser from "../services/useUser";
+import { Stack, Button, Row, Col, CloseButton, Badge } from "react-bootstrap";
+import { Link, Form, useSubmit } from "react-router-dom";
+import * as Yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-import UserService from "../services/user.service";
+const validationSchema = Yup.object().shape({
+  tag: Yup.string()
+    .required('You need to input sumething')
+  })
 
-const Tags = () => {
-  const [content, setContent] = useState("");
+  
 
-  useEffect(() => {
-    UserService.getTags().then(
-      (response) => {
-        setContent(JSON.stringify(response.data));
-      },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
+const Tags = ({edit}) => {
+  const [content] = useState(useLoaderData());
+  const [currentUser] = useUser();
+  const submit = useSubmit();
 
-        setContent(_content);
-      }
-    );
-  }, []);
+  const {
+      register,
+      handleSubmit,
+      formState: { errors }
+    } = useForm({
+      resolver: yupResolver(validationSchema)
+    });
+
+  const onSubmit = () =>{
+
+  }
 
   return (
-    <div className="container">
-      <header className="jumbotron">
-        <h1>Tags page:</h1>
-        <h3>{content}</h3>
-      </header>
+    <div className="container bg-light pb-5">
+        <Col>
+          <h1>Tags page:</h1>
+          <Stack className="float-right mb-3" direction="horizontal" gap={3}>
+            {((currentUser?.role == "admin") && !edit) ? 
+              <Link to={"./edit"}><Button>Edit</Button></Link>
+            :
+              <Link to={"./.."}><Button>Return</Button></Link>
+              }
+            {edit && 
+            <Form method="POST">
+              <input
+                name="tagName"
+                required
+              />
+              <Button variant="success" className="m-2" type="submit">Add</Button>
+            </Form>
+            
+            }
+          </Stack>
+        </Col>
+        
+        {content ? 
+          <p>{content.map((tag) => 
+                  <Badge className="ml-3 p-1 border" key={tag.id}>{tag.name}
+                  {edit && <CloseButton variant="white" onClick={submit("/delete/"+tag.id, {method: "DELETE"})}/>}</Badge>
+              )}
+          </p>
+        :
+        <div>loading</div>
+        }
     </div>
   );
 };

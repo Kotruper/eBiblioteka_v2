@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 
-import UserService from "../services/user.service";
+import BookService from "../services/book.service";
+
 
 const Authors = () => {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    UserService.getAuthors().then(
+    BookService.getAuthors().then(
       (response) => {
-        setContent(JSON.stringify(response.data));
+        setContent(response.data);
       },
       (error) => {
         const _content =
@@ -22,11 +23,16 @@ const Authors = () => {
   }, []);
 
   return (
-    <div className="container">
-      <header className="jumbotron">
+    <div className="container bg-light pb-5">
         <h1>Authors page:</h1>
-        <h3>{content}</h3>
-      </header>
+        {content ? 
+          <p>{content.map((author) => 
+                  <span className="ml-1 p-1 border rounded btn-info" key={author.id}>{author.firstname + " " +author.lastname}</span>
+              )}
+          </p>
+        :
+        <div>loading</div>
+        }
     </div>
   );
 };

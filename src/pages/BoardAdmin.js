@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import UserService from "../services/user.service";
+import BookService from "../services/book.service";
 
 const BoardAdmin = () => {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    UserService.getAdminBoard().then(
+    BookService.getAdminBoard().then(
       (response) => {
         setContent(response.data);
       },

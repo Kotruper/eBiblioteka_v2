@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Image, Badge, Button, Container, Row, Col, Stack } from "react-bootstrap";
 
-import UserService from "../services/user.service";
+import BookService from "../services/book.service";
 import useUser from "../services/useUser";
 import { Link, redirect, useLoaderData, useParams } from "react-router-dom";
 
@@ -9,24 +9,7 @@ const BookPage = () => {
   const content = useLoaderData();
   
   const [currentUser] = useUser();
-/* Now uses loader in index.js
-  const {id} = useParams();
-  useEffect(() => {
-    UserService.getBookbyId(id).then(
-      (response) => {
-        setContent(response.data);
-      },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
 
-        setContent(_content);
-      }
-    );
-  }, [id]);
-*/
   return (
     <div className="container bg-light shadow-lg">
       <Link to={"./.."}>{"<< Powrót"}</Link>
